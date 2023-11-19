@@ -17,12 +17,12 @@ class CompanyViewSet(viewsets.ModelViewSet):
 
 
 class HumidityViewSet(viewsets.ModelViewSet):
-    queryset=HumidityReading.objects.all()
-    serializer_class=HumidityReadingSerializer
+    queryset = HumidityReading.objects.all()
+    serializer_class = HumidityReadingSerializer
 
 class TempViewSet(viewsets.ModelViewSet):
-    queryset=TemperatureReading.objects.all()
-    serializer_class=TemperatureReadingSerializer
+    queryset = TemperatureReading.objects.all()
+    serializer_class = TemperatureReadingSerializer
     
 
 
