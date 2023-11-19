@@ -1,0 +1,66 @@
+<!-- device_graph.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Device Graph</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <h1>Temperature and Humidity Graph for Device {{ device_uid }}</h1>
+    <canvas id="myChart" width="800" height="400"></canvas>
+
+    <script>
+        // Use JavaScript to fetch data from your API endpoint and create a chart
+        var deviceUid = "{{ device_uid }}";  // Get device UID from the template
+
+        fetch(`/api/temperature-readings/${deviceUid}/?start_on=yyyy-mm-ddTHH:MM:SS&end_on=yyyy-mm-ddTHH:MM:SS`)
+            .then(response => response.json())
+            .then(data => {
+                // Extract timestamps, temperatures, and humidities from the data
+                var timestamps = data.map(entry => entry.timestamp);
+                var temperatures = data.map(entry => entry.temperature);
+                var humidities = data.map(entry => entry.humidity);
+
+                // Create a Chart.js chart
+                var ctx = document.getElementById('myChart').getContext('2d');
+                var myChart = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: timestamps,
+                        datasets: [{
+                            label: 'Temperature',
+                            data: temperatures,
+                            borderColor: 'red',
+                            borderWidth: 1,
+                            fill: false,
+                        },
+                        {
+                            label: 'Humidity',
+                            data: humidities,
+                            borderColor: 'blue',
+                            borderWidth: 1,
+                            fill: false,
+                        }]
+                    },
+                    options: {
+                        scales: {
+                            x: {
+                                type: 'time',
+                                time: {
+                                    unit: 'hour',
+                                    displayFormats: {
+                                        hour: 'MMM D, h:mm a'
+                                    },
+                                }
+                            },
+                            y: {
+                                beginAtZero: true
+                            }
+                        }
+                    }
+                });
+            });
+    </script>
+</body>
+</html>
